@@ -1,0 +1,24 @@
+@startuml
+
+actor "User" as user
+participant "__Gtk+__" as gtk
+participant "__:Controller__" as controller
+participant "__:View__" as view
+participant "__:Model__" as model
+participant "__Pymongo__" as mongo
+
+user -> gtk : click on delete button
+gtk -> controller : on_delete_clicked()
+controller -> view : get_selection_info()
+controller <-- view : data (not None)
+controller -> model : workout_id_from_row(row)
+controller <-- model : workout_id
+controller -> model : delete_workout(workout_id)
+model -> mongo : delete_one()
+model <-- mongo : document
+controller <-- model : 
+controller -> view : update_on_deletion()
+gtk <-- view :
+
+
+@enduml

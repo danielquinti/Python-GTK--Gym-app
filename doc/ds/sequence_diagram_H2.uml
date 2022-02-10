@@ -1,0 +1,45 @@
+@startuml
+
+actor "User" as user
+participant "__Gtk+__" as gtk
+participant "__:Controller__" as controller
+participant "__:View__" as view
+participant "__:WorkoutDetailsDialog__" as wdd
+participant "__:Model__" as model
+participant "__Pymongo__" as mongo
+participant "__ErrorDialog__" as error
+
+group change selection
+user -> gtk+ : change selection
+gtk -> controller : on_entries_selection_changed()
+controller -> view : get_selection_info()
+controller <-- view : data (not None)
+controller -> view : update_sensitive(True)
+gtk <-- view :
+end 
+group explore 
+user -> gtk : click on explore button/activate row
+gtk -> controller : on_explore_clicked()/on_row_activated()
+controller -> model : workout_id_from_row(row)
+controller <-- model : workout_id
+controller -> model : get_workout_data(workout_id)
+model -> mongo : find_one()
+group successful connection
+model <-- mongo : document
+controller <-- model : workout_data
+controller -> view : run_workout_details_dialog(dialog_data)
+view -> wdd : run()
+wdd -> wdd : destroy()
+gtk <-- wdd :
+end
+group connection error
+controller<--mongo: exception
+controller->view: run_error_dialog()
+view->error:run()
+error->error:destroy
+gtk<--error:
+end
+end
+
+
+@enduml

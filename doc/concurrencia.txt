@@ -1,0 +1,2 @@
+En cuanto la usuaria activa el botón de borrado, los botones explore y delete se insensibilizan para evitar que se dispare otro borrado antes de que haya terminado el primero. Además, se activa un spinner para que la usuaria tenga feedback y el borrado se realiza en otro hilo para que la interfaz no se bloquee.
+Si el borrado de la base de datos termina con éxito, el hilo principal actualiza la vista para reflejar el cambio. Si no, se dispara un diálogo de error. Por lo tanto, tampoco se llegan a dar incongruencias entre el estado del servidor y la vista.

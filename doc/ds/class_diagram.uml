@@ -1,0 +1,72 @@
+@startuml
+class Controller {
+  +set_model(model)
+  +set_view(view)
+  +main()
+  +on_explore_clicked(button)
+  +on_entries_selection_changed(selection)
+  +on_row_activated(a,b,c)
+  +on_delete_clicked(button)
+  +on_up_clicked(button)
+  +on_down_clicked(button)
+}
+
+
+class Model {
+ +set_transl(transl)
+ +get_data(): [str, str, pixbuf, str]
+ +image_to_pixbuf(workout_id : string, workout_image : string): string
+ +workout_id_from_row(row) : string
+ +get_workout_data()
+ +delete_workout(workout_id)
+ +translate_date(data)
+ +get_doc(collection,key,value)
+ +switch_places(doc,starting,target)
+  }
+package View{
+  class View {
+    +set_transl(transl)
+    +fill_store(data)
+    +build_view()
+    +build_entries()
+    +build_error()
+    +load_store(data)
+    +connect_explore_clicked(callback)
+    +connect_entries_selection_changed(callback)
+    +connect_row_activated(callback)
+    +connect_delete_clicked(callback)
+    +get_selection_info() : (position,row)
+    +_get_selected() : (treemodel,treeiter)
+    +confirm_load()
+    +update_sensitive(explore,delete,deleting)
+    +update_on_deletion()
+    +tap_spinner(toggle)
+    +tap_dialog_spinner(toggle)
+    +show_all()
+    +run_error_dialog()
+    +run_workout_details_dialog(workout_data,workout_id,workout_name)
+    +run_error_dialog()
+    +get_dialog_selection_info
+    +refresh_dialog(workout_data,new_idx)
+  }
+  class WorkoutDetailsDialog{
+    +__init__(parent,title,workout_data,workout_id,workout_name)
+    +fill_store(workout_data)
+    +build_entries()
+    +connect_up_clicked(callback)
+    +connect_down_clicked()
+    +get_selection_info()
+    +_get_selected()
+    +run()
+  }
+  class ErrorDialog{
+  +__init__(parent,title)
+  +run()
+  }
+}
+Controller o-- View
+View o--WorkoutDetailsDialog
+View o--ErrorDialog
+Controller o-- Model
+
+@enduml

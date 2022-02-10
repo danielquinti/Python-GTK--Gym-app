@@ -1,0 +1,8 @@
+En la línea 25 del archivo view.py, se le añade al style_context del
+botón de borrar un estilo destructivo, para que el escritorio del 
+usuario reconozca la naturaleza del botón y lo pinte de un color
+llamativo.
+En la 104 del mismo archivo se emplea una función para actualizar la 
+sensibilidad de los botones que tiene en cuenta si hay alguna fila
+seleccionada. Si no la hay, los botones no se activan.
+

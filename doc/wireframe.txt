@@ -1,0 +1,197 @@
+@startuml
+(*) --> "
+{{
+salt
+{SI
+{/ IPM P1}
+
+  --|--|--
+  --|--|--
+  --|--|--
+  --|--|--
+  --|--|--
+  --|--|--
+  --|--|--
+  --|--|--
+[Explore]|[Delete]|<&clock>
+
+}
+}}
+" as main
+main--> "
+{{
+salt
+{SI
+{/ IPM P1}
+
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+[Explore]|[Delete]
+}
+}}
+" as loaded
+
+main -right-> "
+{{
+salt
+{
+{/ IPM P1}
+Error message
+}
+}}
+" as loadingerror
+
+loaded--> "
+{{
+salt
+{SI
+{/ IPM P1}
+
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+[Explore]|[Delete]|<&clock>
+
+}
+}}
+" as exploring
+
+loaded--> "
+{{
+salt
+{SI
+{/ IPM P1}
+
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+[Explore]|[Delete]|<&clock>
+
+}
+}}
+" as deleting
+
+exploring --> "
+{{
+salt
+{SI
+{/ Workout Details }
+<b>Workout Title
+Duration1 | Name | Description | Image | Video
+  --|--|--|--|--
+Duration2 | Name | Description | Image | Video
+  --|--|--|--|--
+Duration3 | Name | Description | Image | Video
+  --|--|--|--|--
+Duration4 | Name | Description | Image | Video
+  --|--|--|--|--
+[up]|[down]
+}
+}}
+" as dialog
+dialog --> loaded
+dialog -->"
+{{
+salt
+{SI
+{/ Workout Details }
+<b>Workout Title
+Duration1 | Name1 | Description1 | Image1 | Video1
+  --|--|--|--|--
+Duration2 | Name2 | Description2 | Image2 | Video2
+  --|--|--|--|--
+Duration3 | Name3 | Description3 | Image3 | Video3
+  --|--|--|--|--
+Duration4 | Name4 | Description4 | Image4 | Video4
+  --|--|--|--|--
+[up]|[down]|<&clock>
+}
+}}
+" as switching
+
+switching-->"
+{{
+salt
+{SI
+{/ Workout Details }
+<b>Workout Title
+Duration2 | Name2 | Description2 | Image2 | Video2
+  --|--|--|--|--
+Duration1 | Name1 | Description1 | Image1 | Video1
+  --|--|--|--|--
+Duration3 | Name3 | Description3 | Image3 | Video3
+  --|--|--|--|--
+Duration4 | Name4 | Description4 | Image4 | Video4
+  --|--|--|--|--
+[up]|[down]
+}
+}}
+" as switched
+
+switching-->"
+{{
+salt
+{
+{/ Switching error}
+Error message
+}
+}}
+" as switcherror
+
+exploring--> "
+{{
+salt
+{
+{/ Workout details}
+Error message
+}
+}}
+" as detailserror
+
+detailserror-->loaded
+deleting-->"
+{{
+salt
+{SI
+{/ IPM P1}
+
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+Name | Date | Image
+  --|--|--
+
+  --|--|--
+[Explore]|[Delete]
+
+}
+}}
+" as deletedmain
+deleting-->"
+{{
+salt
+{
+{/ Deletion error}
+Error message
+}
+}}
+" as deletion_error
+deletion_error-->loaded
+@enduml

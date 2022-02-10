@@ -1,0 +1,27 @@
+@startuml
+
+participant "__:Controller__" as controller
+participant "__:Model__" as model
+participant "__:View__" as view
+participant "__Pymongo__" as mongo
+participant "__Gtk+__" as gtk
+controller ->view : build_view()
+controller <--view:
+controller -> model : get_data()
+model -> mongo : find()
+group successful connection
+model <-- mongo : documents
+controller <-- model : data
+controller -> view : load_store(data)
+controller <-- view:
+end
+group connection failure
+controller <-- mongo : exception
+controller ->view : build_error()
+controller <--view :
+end
+controller -> view : show_all()
+controller <-- view :
+controller -> gtk : main()
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+
+actor "User" as user
+participant "__Gtk+__" as gtk
+participant "__:Controller__" as controller
+participant "__:View__" as view
+participant "__:Thread__" as thread
+participant "__:Model__" as model
+participant "__Pymongo__" as mongo
+participant "__ErrorDialog__" as error
+
+user -> gtk : click on up/down button
+gtk -> controller : on_up/down_clicked()
+controller -> view : tap_dialog_spinner(True)
+controller<--view :
+controller->thread : on_switch_places_clicked_thread(target)
+thread->view:get_dialog_doc_info
+thread<--view:doc,idx
+thread->model:switch_places(doc,origin,target)
+model->mongo:delete_one(query)
+model<--mongo:
+model->mongo:insert_one(doc)
+model<--mongo:
+group successful switch
+thread<--model:new_idx
+thread->model:get_workout_data(workout_id)
+model->mongo:find_one(workout_id)
+model<--mongo:document
+model<--thread:workout_data,workout_id,workout_name
+controller<--thread:
+controller->view: refresh_dialog(workout_data,new_idx)
+gtk<--view:
+end
+group connection failed
+thread<--model:exception
+controller<--thread:
+controller->view:tap_dialog_spinner(False)
+controller<--view:
+controller->view:run_error_dialog(title,desc)
+view->error:run()
+error->error:destroy()
+gtk<--error:
+end
+@enduml
